@@ -146,7 +146,30 @@ class Board
         }
     }            
                      
-    //public int manhattan()                 // sum of Manhattan distances between blocks and goal
+  /**
+    * @return sum of Manhattan distances between blocks and goal.
+    */
+    public int manhattan() 
+    {
+        int sum = 0;
+        for (int i = 0; i < blocks.length; i++) 
+        {
+            if (blocks[i] == 0) 
+            {
+                continue;
+            }
+            
+            int dRow = Math.abs(  (i % N ) - (blocks[i] - 1) % N );
+            int dCol = Math.abs(  (i / N ) - (blocks[i] - 1) / N );
+            
+            sum += row + col;
+        }
+        return man;
+    }
+ 
+  
+  
+  
     //public Board twin()                    // a boadr that is obtained by exchanging two adjacent blocks in the same row
     //public boolean equals(Object y)        // does this board equal y?
     //public Iterable<Board> neighbors()     // all neighboring boards
