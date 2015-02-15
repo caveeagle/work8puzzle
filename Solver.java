@@ -1,4 +1,5 @@
 
+/*    java Solver puzzle04.txt   */
 
 public class Solver 
 {
@@ -9,14 +10,9 @@ public class Solver
     /** @return is the initial board solvable? */
     public boolean isSolvable()
     {
-       String t1 = initBoard.toString();
-       String t2 = t1.trim();
-       int a1 = t1.length();
-       int a2 = t2.length();
-       
-       System.out.println(a1+" - "+a2);
-       
-       return false;
+       String st = initBoard.toString();
+       int dif =  st.length() - st.trim().length(); // 2 if false, and 3 if solvable
+       return ( dif > 2 );
     }
 
 
