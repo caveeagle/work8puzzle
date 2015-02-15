@@ -175,11 +175,11 @@ class Board
             {
                 continue;
             }
-            
-            int deltaI = (i % N ) - ( (blocks[i] - 1) % N );
-            int deltaJ = (i / N ) - ( (blocks[i] - 1) / N );
-            
+            int deltaJ = (i % N ) - ( (blocks[i] - 1) % N );
+            int deltaI = (i / N ) - ( (blocks[i] - 1) / N );
+
             manhDist = manhDist + Math.abs(deltaI) + Math.abs(deltaJ);
+            
         }
         return manhDist;
     }
@@ -269,12 +269,16 @@ class Board
             
         short tmpBlock;
         int indexFirst,indexSecond;
+        int deltaM,tmp;
 
         if(zeroI!=0) 
         {
             indexFirst  = N * (zeroI - 1) + zeroJ ;
             indexSecond = N * zeroI + zeroJ ;
             tmpBlock  = blocks[indexFirst];
+            
+            tmp = zeroI - (tmpBlock - 1) / N ;
+            deltaM = Math.abs(tmp)-Math.abs(tmp-1);
             
             /*  swap  */
             blocks[indexFirst] = 0;
@@ -291,6 +295,9 @@ class Board
             indexFirst  = N * (zeroI + 1) + zeroJ ;
             indexSecond = N * zeroI + zeroJ ;
             tmpBlock  = blocks[indexFirst];
+
+            tmp = zeroI - (tmpBlock - 1) / N ;
+            deltaM = Math.abs(tmp)-Math.abs(tmp+1);
             
             /*  swap  */
             blocks[indexFirst] = 0;
@@ -307,7 +314,10 @@ class Board
             indexFirst  = N * zeroI + ( zeroJ - 1 ) ;
             indexSecond = N * zeroI + zeroJ ;
             tmpBlock  = blocks[indexFirst];
-            
+
+            tmp = zeroJ - (tmpBlock - 1) % N ;
+            deltaM = Math.abs(tmp)-Math.abs(tmp-1);
+                        
             /*  swap  */
             blocks[indexFirst] = 0;
             blocks[indexSecond] = tmpBlock;
@@ -323,7 +333,10 @@ class Board
             indexFirst  = N * zeroI + ( zeroJ + 1 ) ;
             indexSecond = N * zeroI + zeroJ ;
             tmpBlock  = blocks[indexFirst];
-            
+
+            tmp = zeroJ - (tmpBlock - 1) % N ;
+            deltaM = Math.abs(tmp)-Math.abs(tmp+1);
+
             /*  swap  */
             blocks[indexFirst] = 0;
             blocks[indexSecond] = tmpBlock;
@@ -354,13 +367,13 @@ class Board
             }
             Board testBoard = new Board(tiles);
 
-            StdOut.println( "Orig: \n"+testBoard.toString() );
+            StdOut.println( "Orig: \n(Manch="+testBoard.manhattan()+")\n\n"+testBoard.toString() );
             
              
              int n = 1;
              for (Board neighbor : testBoard.neighbors()) 
              {
-                    StdOut.println( "N "+n+": \n\n"+neighbor.toString() );
+                    StdOut.println( "N"+n+": (Manch="+neighbor.manhattan()+")\n\n"+neighbor.toString() );
                     n++;
              }
             
