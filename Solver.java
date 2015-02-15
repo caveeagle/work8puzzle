@@ -4,8 +4,7 @@
 public class Solver 
 {
     private Board initBoard;
-    
-    
+   
     
     /** @return is the initial board solvable? */
     public boolean isSolvable()
