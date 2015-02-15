@@ -97,6 +97,15 @@ class Board
             }
             s.append("\n");
         }
+        
+        /* HINT: if puzzle is solvable, add additional invisible symbol */
+        
+        /*     It need for parameter passing from private method        */
+        
+        if( this.isSolvable() )
+        {
+            s.append("\n");
+        }
         return s.toString();
     }
 
