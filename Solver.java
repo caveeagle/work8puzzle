@@ -1,10 +1,6 @@
-
-/*    java Solver puzzle01.txt   */
-
 import java.util.Comparator;
 
-public class Solver 
-{
+public class Solver {
     
     private MinPQ<SearchNode> pq;
     
@@ -13,8 +9,6 @@ public class Solver
     private SearchNode goal = null;
     
     private boolean solvable = true;
-
-    private Board initBoard;
     
     private final Comparator<SearchNode> byHamming = new ByHamming();
     private final Comparator<SearchNode> byManhattan = new ByManhattan();
@@ -23,10 +17,7 @@ public class Solver
      * find a solution to the initial board (using the A* algorithm)
      * @param initial
      */
-    public Solver(Board initial) 
-    {
-        initBoard = initial;
-        
+    public Solver(Board initial) {
         pq = new MinPQ<SearchNode>(byManhattan);
         pqTwin = new MinPQ<SearchNode>(byHamming);
         
@@ -38,8 +29,7 @@ public class Solver
         pqTwin.insert(twinNode);
         
         boolean solved = false;
-        while (!solved) 
-        {
+        while (!solved) {
             solved = solve();
         }
     }
@@ -140,12 +130,6 @@ public class Solver
     public boolean isSolvable() {
         return solvable;
     }
-    /*public boolean isSolvable()
-    {
-       String st = initBoard.toString();
-       int dif =  st.length() - st.trim().length(); // 2 if false, and 3 if solvable
-       return ( dif > 2 );
-    }*/
     
     /**
      * @return min number of moves to solve initial board; -1 if no solution
@@ -204,4 +188,3 @@ public class Solver
         }
     }
 }
-
