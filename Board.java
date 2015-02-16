@@ -262,11 +262,6 @@ class Board
     {
         Stack<Board> boardsStack = new Stack<Board>();
         
-        /*  Exploit the fact that the difference in Manhattan distance 
-            between a board and a neighbor is either +1, -1, or 0, 
-            based on the direction that the block moves!
-        */
-            
         short tmpBlock;
         int indexFirst,indexSecond;
         int deltaM,tmp;
