@@ -364,11 +364,6 @@ public class Board
             
             Board testBoard = new Board(tiles);
 
-            Board twin = testBoard.twin();
-            
-            StdOut.println( "Orig: \n"+testBoard.toString() );
-            StdOut.println( "Twin: \n"+twin.toString() );
-
      }
      
 } 
