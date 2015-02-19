@@ -11,22 +11,16 @@ public class Solver {
     private final Comparator<SearchNode> byHamming = new ByHamming();
     private final Comparator<SearchNode> byManhattan = new ByManhattan();
     
+    private Board initBoard;
+    
     /**
      * find a solution to the initial board (using the A* algorithm)
      * @param initial
      */
     public Solver(Board initial) 
     {
-        
-        /* Determine, is the initial board solvable? (with hint) */
-        String st = initial.toString();
-        int dif =  st.length() - st.trim().length(); // 2 if false, and 3 if solvable
-        if ( dif > 2 ) {
-                solvable = true;
-        }else{
-                solvable = false;
-        }
-        
+        initBoard = initial;
+        solvable = isSolvable();
         
         pq = new MinPQ<SearchNode>(byManhattan);
         
@@ -97,7 +91,6 @@ public class Solver {
     {
         if(!solvable) { return true; }
         
-        
         // solve pq
         SearchNode node = pq.delMin();
         if (node.board.isGoal()) {
@@ -122,6 +115,16 @@ public class Solver {
      */
     public boolean isSolvable() 
     {
+        /* Determine, is the initial board solvable? (with hint) */
+        String st = initBoard.toString(); 
+        
+        int dif =  st.length() - st.trim().length(); // 2 if false, and 3 if solvable
+        if ( dif > 2 ) {
+                solvable = true;
+        }else{
+                solvable = false;
+        }
+        
         return solvable;
     }
     
@@ -130,7 +133,7 @@ public class Solver {
      */
     public int moves() 
     {
-        if (!solvable) 
+        if (!isSolvable()) 
         {
             return -1;
         }
