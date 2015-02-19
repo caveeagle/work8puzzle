@@ -4,8 +4,6 @@ public class Solver {
     
     private MinPQ<SearchNode> pq;
     
-    private MinPQ<SearchNode> pqTwin;
-    
     private SearchNode goal = null;
     
     private boolean solvable = true;
@@ -17,47 +15,58 @@ public class Solver {
      * find a solution to the initial board (using the A* algorithm)
      * @param initial
      */
-    public Solver(Board initial) {
+    public Solver(Board initial) 
+    {
+        
+        /* Determine, is the initial board solvable? (with hint) */
+        String st = initial.toString();
+        int dif =  st.length() - st.trim().length(); // 2 if false, and 3 if solvable
+        if ( dif > 2 ) {
+                solvable = true;
+        }else{
+                solvable = false;
+        }
+        
+        
         pq = new MinPQ<SearchNode>(byManhattan);
-        pqTwin = new MinPQ<SearchNode>(byHamming);
         
         SearchNode initNode = new SearchNode(initial, 0, null);
         pq.insert(initNode);
         
-        Board twin = initial.twin();
-        SearchNode twinNode = new SearchNode(twin, 0, null);
-        pqTwin.insert(twinNode);
-        
         boolean solved = false;
-        while (!solved) {
+        while (!solved) 
+        {
             solved = solve();
         }
     }
 
-    private class ByHamming implements Comparator<SearchNode> {
-        public int compare(SearchNode n1, SearchNode n2) {
-            return n1.board.hamming() 
-                - n2.board.hamming();
+    private class ByHamming implements Comparator<SearchNode> 
+    {
+        public int compare(SearchNode n1, SearchNode n2) 
+        {
+            return n1.board.hamming() - n2.board.hamming();
         }
     }
     
-    private class ByManhattan implements Comparator<SearchNode> {
-        public int compare(SearchNode n1, SearchNode n2) {
-            return n1.board.manhattan()
-                    + n1.moves 
-                    - n2.board.manhattan()
-                    - n2.moves;
+    private class ByManhattan implements Comparator<SearchNode> 
+    {
+        public int compare(SearchNode n1, SearchNode n2) 
+        {
+            int D = n1.board.manhattan() + n1.moves  - n2.board.manhattan() - n2.moves;
+            return D;
         }
     }
     
-    private class SearchNode {
+    private class SearchNode 
+    {
         private Board board;
         private int moves;
         private SearchNode prev;
         
         private int hash = 0;
         
-        public SearchNode(Board b, int m, SearchNode p) {
+        public SearchNode(Board b, int m, SearchNode p) 
+        {
             board = b;
             moves = m;
             prev = p;
@@ -84,7 +93,10 @@ public class Solver {
         }
     }
 
-    private boolean solve() {
+    private boolean solve() 
+    {
+        if(!solvable) { return true; }
+        
         
         // solve pq
         SearchNode node = pq.delMin();
@@ -102,40 +114,24 @@ public class Solver {
             pq.insert(n);
         }
         
-        // solve twin
-        SearchNode twinNode = pqTwin.delMin();
-        if (twinNode.board.isGoal()) {
-            solvable = false;
-            return true;
-        }
-        
-        for (Board board : twinNode.board.neighbors()) {
-
-            SearchNode n = new SearchNode(board, node.moves + 1, node);
-            if (n.equals(twinNode.prev)) {
-                continue;
-            }
-
-            pqTwin.insert(n);
-        }
-        Board twin = node.board.twin();
-        twinNode = new SearchNode(twin, 0, null);
-        pqTwin.insert(twinNode);
         return false;
     }
     
     /**
      * @return is the initial board solvable?
      */
-    public boolean isSolvable() {
+    public boolean isSolvable() 
+    {
         return solvable;
     }
     
     /**
      * @return min number of moves to solve initial board; -1 if no solution
      */
-    public int moves() {
-        if (!solvable) {
+    public int moves() 
+    {
+        if (!solvable) 
+        {
             return -1;
         }
         return goal.moves;
@@ -146,7 +142,8 @@ public class Solver {
      */
     public Iterable<Board> solution() {
         
-        if (goal == null) {
+        if (goal == null) 
+        {
             return null;
         }
         
@@ -180,11 +177,12 @@ public class Solver {
 
         // print solution to standard output
         if (!solver.isSolvable())
+        {
             StdOut.println("No solution possible");
-        else {
+        }
+        else 
+        {
             StdOut.println("Minimum number of moves = " + solver.moves());
-            //for (Board board : solver.solution())
-            //    StdOut.println(board);
         }
     }
 }
