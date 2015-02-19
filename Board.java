@@ -3,7 +3,7 @@
 
 import java.util.Arrays;
 
-class Board
+public class Board
 {
     /**   short type because N < 128  */
     private short[] blocks; 
@@ -163,10 +163,10 @@ class Board
     */
     public int manhattan() 
     {
-        if( manhDist != -1 )
+        /*if( manhDist != -1 )
         { 
             return manhDist;
-        }
+        }*/
         
         manhDist = 0;
         for (int i = 0; i < blocks.length; i++) 
@@ -213,46 +213,47 @@ class Board
      */
     public Board twin() 
     {
-        int[][] twins = new int[N][N];
+        int[][] twinB = new int[N][N];
         
         for (int i = 0; i < N; i++) 
         {
             for (int j = 0; j < N; j++) 
             {
-                twins[i][j] = blocks[i * N + j];
+                twinB[i][j] = blocks[i * N + j];
             }
         }
         
         boolean ok = false;
+
+        int row  = 0;
+        int col1 = 0;
+        int col2 = 1;
+
         while (!ok) 
         {
-            int row  = 0;
-            int col1 = 0;
-            int col2 = 1;
-
-            if( twins[row][col1] == 0 || twins[row][col2] == 0 )
-            {
-              col1++;  
-              col2++;
-              continue;  
-            }
-            
             if (col2 >= N)
             { 
               row++;
               col1 = 0;  
               col2 = 1;  
               continue;  
+            }                       
+
+            if( twinB[row][col1] == 0 || twinB[row][col2] == 0 )
+            {
+              col1++;  
+              col2++;
+              continue;  
             }
             
-            int tmp = twins[row][col1];
-            twins[row][col1] = twins[row][col2];
-            twins[row][col2] = tmp;
+            int tmp = twinB[row][col1];
+            twinB[row][col1] = twinB[row][col2];
+            twinB[row][col2] = tmp; 
             
             ok = true;
         }
 
-        return new Board(twins);
+        return new Board(twinB);
     }
   
     /**
@@ -360,18 +361,13 @@ class Board
                     tiles[i][j] = in.readInt();
                 }
             }
+            
             Board testBoard = new Board(tiles);
 
-            StdOut.println( "Orig: \n(Manch="+testBoard.manhattan()+")\n\n"+testBoard.toString() );
+            Board twin = testBoard.twin();
             
-             
-             int n = 1;
-             for (Board neighbor : testBoard.neighbors()) 
-             {
-                    StdOut.println( "N"+n+": (Manch="+neighbor.manhattan()+")\n\n"+neighbor.toString() );
-                    n++;
-             }
-            
+            StdOut.println( "Orig: \n"+testBoard.toString() );
+            StdOut.println( "Twin: \n"+twin.toString() );
 
      }
      
